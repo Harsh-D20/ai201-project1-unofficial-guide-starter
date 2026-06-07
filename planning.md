@@ -9,12 +9,13 @@
 
 ## Domain
 
-<!-- What domain did you choose? Why is this knowledge valuable and hard to find through official channels? -->
+I chose the On-Campus Dining domain for the University of Maryland, College Park. 
+This knowledge is difficult to find because it is scattered across so many websites. Dining hall locations, prices, meal plans, cafes, hours, are all across 5-10+ websites, so this domain is perfect.
 
 ---
 
 ## Documents
-
+Hello
 <!-- List your specific sources: URLs, subreddit names, forum threads, or file descriptions.
      Aim for at least 10 sources that together cover different subtopics or perspectives within your domain. -->
 

@@ -9,10 +9,8 @@
 
 ## Domain
 
-<!-- What topic or category of knowledge does your system cover?
-     Why is this knowledge valuable, and why is it hard to find through official channels?
-     Example: "Student reviews of CS professors at [university] — useful because official
-     course descriptions don't reflect teaching style, exam difficulty, or workload." -->
+I chose the On-Campus Dining domain for the University of Maryland, College Park. 
+This knowledge is difficult to find because it is scattered across so many websites. Dining hall locations, prices, meal plans, cafes, hours, are all across 5-10+ websites, so this domain is perfect.
 
 ---
 
