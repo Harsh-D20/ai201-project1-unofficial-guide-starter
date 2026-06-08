@@ -41,7 +41,7 @@ Recursive Chunking
 50 characters
 
 **Reasoning:**
-I am using recursive chunking since the documents are split into a very obvious hierarchical structure, with each section addressing a different topic. I am using a chunk size of 400 characters since the information is in paragraphs and 500 characters is approximately 60 words, which seems to be the average amount of words needed to describe concepts. I have also selected an overlap of 50 characters such that there are approximately 10 word overlaps between chunks.
+I am using recursive chunking since the documents are split into a very obvious hierarchical structure, with each section addressing a different topic. I am using a chunk size of 500 characters since the information is in paragraphs and 500 characters is approximately 60 words, which seems to be the average amount of words needed to describe concepts. I have also selected an overlap of 50 characters such that there are approximately 10 word overlaps between chunks.
 
 ---
 
@@ -50,11 +50,16 @@ I am using recursive chunking since the documents are split into a very obvious 
 **Embedding model:**
 all-MiniLM-L6-v2
 
+**Distance metric:**
+Cosine similarity
+
 **Top-k:**
-3 chunks per query
+10 chunks per query
 
 **Production tradeoff reflection:**
 If cost were not a constraint, I would opt for an embedding model that could interpret other languages since universities tend to have high international student or multilingual populations.
+
+Top-k was increased from 3 to 10 after evaluation revealed that questions requiring synthesis across two plan types (e.g. Resident vs. Connector) needed more retrieved chunks to surface all relevant facts.
 
 ---
 
@@ -66,7 +71,7 @@ If cost were not a constraint, I would opt for an embedding model that could int
 | 2 | What should a UMD student do if they are too sick to go to a dining hall? | Students can request a sick meal from a dining hall by submitting a Sick Meal Request at https://dining.umd.edu/students/sick-meals. The student must then send someone to go pick up the meal, who will pick it up at the greeter's station. |
 | 3 | What is the difference between a Resident Plan and a Connector Plan at UMD? | A Resident Plan has unlimited swipes but the student must reside on campus. A Connector Plan has a limited amount of swipes, but allows students to live off campus. The prices for Resident Plans can be found at: https://dining.umd.edu/students/resident-plans, and the prices for Connecter Plans can be found at: https://dining.umd.edu/students/connector-plans. |
 | 4 | Is a UMD meal plan cheaper than buying food on your own if I am a commuter student? | Consider purchasing a small number of swipes as a back-up in case you are unable to buy or cook food. Additionally, try to plan the average cost of your meal, as the average cost of a meal on a commuter plan is about $10 [Source: https://www.reddit.com/r/UMD/comments/1s1ol7n/whats_cheaper_choosing_a_meal_plan_or_buying/] |
-| 5 | Can students with food allergies get accommodations at UMD dining halls, and how? | Yes, students with food allergies can get accomodations. Each dining hall has a separate procedure for this, which is outlined at https://dining.umd.edu/nutrition-allergies-and-special-diets/allergy |
+| 5 | What are Dining Dollars and how do I get them? | Dining Dollars are a prepaid balance loaded on your UMD ID card, accepted at all permanent Maryland Dining locations including dining halls, cafés, markets, and convenience shops. You can purchase them in bundles of 125, 250, or 500 at a 5% discount plus sales tax savings. They are also included with upgraded Anytime Dining plans. More info at https://dining.umd.edu/students/dining-dollars-flexible-discounted-and-convenient |
 
 ---
 
@@ -82,9 +87,9 @@ If cost were not a constraint, I would opt for an embedding model that could int
 ```mermaid
 flowchart TD
      DI[Document Ingestion \n Uploading scraped data of webpages with Soup]
-     C[Chunking \n Recursive with chunk size 400 and overlap 50 characters]
+     C[Chunking \n Recursive with chunk size 500 and overlap 50 characters]
      EVS[Embedding + Vector Store \n Creating embeddings with all-MiniLM-L6-v2, stored in ChromaDB]
-     R[Retrieval]
+     R[Retrieval \n Take a query and return top-k chunks as sources for generation]
      G[Generation]
 
      DI --> C
@@ -111,5 +116,6 @@ flowchart TD
 I'll scrape the webpages I listed. I'll ask Claude to write scrape_page() which takes in a webpage and returns a html-tag removed body of text. I'll also give Claude my Chunking Strategy section to implement chunk_text() with my specified size and overlap.
 
 **Milestone 4 — Embedding and retrieval:**
+I'll ask Claude to use all-MiniLM-L6-v2 to embed the chunks and also write a retrieval function that takes in a query and returns top-k chunks as its sources.
 
 **Milestone 5 — Generation and interface:**
