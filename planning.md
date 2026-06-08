@@ -90,7 +90,7 @@ flowchart TD
      C[Chunking \n Recursive with chunk size 500 and overlap 50 characters]
      EVS[Embedding + Vector Store \n Creating embeddings with all-MiniLM-L6-v2, stored in ChromaDB]
      R[Retrieval \n Take a query and return top-k chunks as sources for generation]
-     G[Generation]
+     G[Generation \n Groq API with llama-3.3-70b-versatile \n Served via Gradio UI on localhost:7680]
 
      DI --> C
      C --> EVS
@@ -109,4 +109,4 @@ I'll scrape the webpages I listed. I'll ask Claude to write scrape_page() which 
 I'll ask Claude to use all-MiniLM-L6-v2 to embed the chunks and also write a retrieval function that takes in a query and returns top-k chunks as its sources.
 
 **Milestone 5 — Generation and interface:**
-I'll ask Claude to write a generation script and an app.py to serve as the entrypoint. I'll give Claude the ui requirements to serve as a baseline.
+I'll give Claude the system prompt requirements (grounded answers with inline URL citations, refusal when documents are insufficient) and ask it to implement generate.py using the Groq API with llama-3.3-70b-versatile. I'll also ask Claude to implement app.py using Gradio, serving on localhost:7680 with the five eval questions pre-loaded as examples. I'll verify the output format matches the citation spec and that the model does not hallucinate sources beyond those provided in context.
