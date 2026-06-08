@@ -1,0 +1,60 @@
+URL_SOURCE: https://dining.umd.edu/students/sick-meals
+TITLE: Sick Meals | UMD Dining Services
+
+Sick Meals
+
+If you are a resident student and are feeling unwell, we understand that it may not be wise for you to come to the dining hall for a meal. To help, we offer a Sick Meal service that allows you to send a representative to collect a meal on your behalf.
+
+How to Get a Sick Meal:
+1. Complete the Online Sick Meal Request Form.
+2. Send a Representative : Have a friend come to the dining hall to pick up your meal. Please make sure your representative wears a mask to ensure safety.
+3. Your representative should stop at the greeter's station and give your name. We will bring the meal to them.
+
+Meal Details:
+- Sick Meals are available at no additional cost for students with a resident dining plan.
+- The service is intended to provide basic nutrition for short-term illness and does not replace long-term medical care.
+- If you are experiencing severe or extended illness (more than three days), we strongly recommend visiting the Health Center for assistance.
+
+Menus
+- Breakfast :
+ - Scrambled eggs, Breakfast potatoes, Bagel, Fruit
+- Lunch and Dinner :
+ - Soup, Grilled chicken, Rice, Vegetables, Ginger Ale, Cookie
+
+Meal Pickup Timing:
+- Yahentamitsi and South Campus Dining Halls
+ - Plan to pickup by 8:30 p.m.
+- 251 North Dining Hall :
+ - Plan to pickup by 9:30 p.m. (Mon-Thu) and 6:30 p.m. (Fri-Sun).
+- Real Important :
+ - Place your Sick Meal request at least thirty minutes before your scheduled pick up time
+- Hours change during academic breaks and summer , so be sure to check for any updates.
+
+Take care of your health. We are here to help ensure you get the nourishment you need while you rest and recover!
+
+Sick Meal Request
+
+Student Name
+
+Student UID
+
+Student Email
+
+Pick Up Location
+- Select -YahentamitsiSouth Campus Dining Hall251 North
+
+Pick Up Date & Time
+
+Pick Up Date & Time: Date
+
+Pick Up Date & Time: Time
+
+Vegan?
+- Select -YesNo
+
+Vegetarian?
+- Select -YesNo
+
+Allergies?
+
+Name of Pick Up Person

@@ -1,0 +1,11 @@
+URL_SOURCE: https://dining.umd.edu/home/hours-locations/dining-halls/door-prices
+TITLE: Door Prices | UMD Dining Services
+
+Door Prices
+
+Dining hall door prices for Fall 2025:
+- Breakfast: $9.49      Open to 10:30am
+- Lunch: $15.99         10:30am to 4:00pm
+- Dinner: $19.99         4:00pm to Close
+
+Go Back
