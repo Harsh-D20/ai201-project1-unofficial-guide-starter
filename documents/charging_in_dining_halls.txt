@@ -1,4 +1,4 @@
-URL_SOURCE: https://www.reddit.com/r/UMD/comments/1sngnlo/charging_in_dining_halls.json
+URL_SOURCE: https://www.reddit.com/r/UMD/comments/1sngnlo/charging_in_dining_halls
 TITLE: Charging in Dining Halls
 
 Are there any charging sockets in the dining halls (especially Y Hall)? If yes, what is the best spot where I can continue to work while eating ?

@@ -240,7 +240,8 @@ def _scrape_reddit(url: str) -> str:
     raw = "\n".join(lines).strip()
     raw = re.sub(r"\n{3,}", "\n\n", raw)
 
-    header = f"URL_SOURCE: {url}\nTITLE: {title}\n\n" if title else f"URL_SOURCE: {url}\n\n"
+    # remove the .json suffix from the url
+    header = f"URL_SOURCE: {url}\nTITLE: {title}\n\n" if title else f"URL_SOURCE: {url[:-5]}\n\n"
     return header + raw
 
 
@@ -277,24 +278,24 @@ def save_to_txt(text: str, filename: str):
         f.write(text)
 
 if __name__ == "__main__":
-    # URLS = [
-    #     "https://dining.umd.edu/hours-locations/dining-halls",
-    #     "https://dining.umd.edu/home/hours-locations/dining-halls/door-prices",
-    #     "https://academiccatalog.umd.edu/undergraduate/campus-administration-resources-student-services/student-programs-services/dining-services",
-    #     "https://campusvisitorguides.com/umd/where-to-eat",
-    #     "https://dining.umd.edu/nutrition-allergies-and-special-diets/allergy",
-    #     "https://dining.umd.edu/students/sick-meals",
-    #     "https://dining.umd.edu/students/resident-plans",
-    #     "https://dining.umd.edu/students/connector-plans",
-    #     "https://dining.umd.edu/students/dining-dollars-flexible-discounted-and-convenient"
-    # ]
-    # for url in URLS:
-    #     try:
-    #         text = scrape_page(url)
-    #     except Exception as e:
-    #         print(f"Error scraping {url}: {e}")
-    #     else:
-    #         save_to_txt(text, f"documents/{url.split('/')[-1]}2.txt")
+    URLS = [
+        "https://dining.umd.edu/hours-locations/dining-halls",
+        "https://dining.umd.edu/home/hours-locations/dining-halls/door-prices",
+        "https://academiccatalog.umd.edu/undergraduate/campus-administration-resources-student-services/student-programs-services/dining-services",
+        "https://campusvisitorguides.com/umd/where-to-eat",
+        "https://dining.umd.edu/nutrition-allergies-and-special-diets/allergy",
+        "https://dining.umd.edu/students/sick-meals",
+        "https://dining.umd.edu/students/resident-plans",
+        "https://dining.umd.edu/students/connector-plans",
+        "https://dining.umd.edu/students/dining-dollars-flexible-discounted-and-convenient"
+    ]
+    for url in URLS:
+        try:
+            text = scrape_page(url)
+        except Exception as e:
+            print(f"Error scraping {url}: {e}")
+        else:
+            save_to_txt(text, f"documents/{url.split('/')[-1]}2.txt")
 
     # read reddit urls as json
     REDDIT_URLS = [
