@@ -14,9 +14,10 @@ SYSTEM_PROMPT = (
     "If the documents don't contain enough information to answer, say "
     "'I don't have enough information on that.'\n\n"
     "Format your answer with in-text citations. After each claim, cite the source "
-    "document in square brackets, like: "
-    "\"Dinner costs $19.99 [door_prices.txt]. Students living on campus must purchase "
-    "a Resident Plan [resident_plans.txt].\"\n\n"
+    "URL in square brackets, like: "
+    "\"Dinner costs $19.99 [https://dining.umd.edu/home/hours-locations/dining-halls/door-prices]. "
+    "Students living on campus must purchase a Resident Plan "
+    "[https://dining.umd.edu/students/resident-plans].\"\n\n"
     "Only use information from the provided documents. Do not add facts from outside "
     "the documents."
 )
@@ -25,7 +26,8 @@ SYSTEM_PROMPT = (
 def build_context(chunks: list[dict]) -> str:
     parts = []
     for chunk in chunks:
-        parts.append(f"[{chunk['source']}]\n{chunk['text']}")
+        label = chunk["url"] if chunk.get("url") else chunk["source"]
+        parts.append(f"[{label}]\n{chunk['text']}")
     return "\n\n---\n\n".join(parts)
 
 

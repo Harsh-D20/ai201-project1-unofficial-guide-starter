@@ -10,6 +10,12 @@ CHROMA_DIR = "chroma_db"
 COLLECTION_NAME = "dining_guide"
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
+def _parse_url(text: str) -> str:
+    for line in text.splitlines():
+        if line.startswith("URL_SOURCE:"):
+            return line.split("URL_SOURCE:", 1)[1].strip()
+    return ""
+
 
 def build_index(docs_dir: str = DOCS_DIR, chroma_dir: str = CHROMA_DIR) -> chromadb.Collection:
     model = SentenceTransformer(EMBEDDING_MODEL)
@@ -31,10 +37,12 @@ def build_index(docs_dir: str = DOCS_DIR, chroma_dir: str = CHROMA_DIR) -> chrom
         path = os.path.join(docs_dir, filename)
         with open(path, encoding="utf-8") as f:
             text = f.read()
-        all_chunks.extend(chunk_document(text, source=filename))
+        url = _parse_url(text)
+        for chunk in chunk_document(text, source=filename):
+            chunk["url"] = url
+            all_chunks.append(chunk)
 
     texts = [c["text"] for c in all_chunks]
-    sources = [c["source"] for c in all_chunks]
     ids = [f"chunk_{i}" for i in range(len(all_chunks))]
 
     embeddings = model.encode(texts, show_progress_bar=True).tolist()
@@ -43,7 +51,7 @@ def build_index(docs_dir: str = DOCS_DIR, chroma_dir: str = CHROMA_DIR) -> chrom
         ids=ids,
         embeddings=embeddings,
         documents=texts,
-        metadatas=[{"source": s} for s in sources],
+        metadatas=[{"source": c["source"], "url": c["url"]} for c in all_chunks],
     )
 
     print(f"Indexed {len(all_chunks)} chunks from {docs_dir}/ into {chroma_dir}/")

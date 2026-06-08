@@ -40,6 +40,7 @@ def retrieve(query: str, top_k: int = TOP_K) -> list[dict]:
         chunks.append({
             "text": text,
             "source": metadata["source"],
+            "url": metadata.get("url", ""),
             "score": distance,
         })
 
