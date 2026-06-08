@@ -102,16 +102,6 @@ flowchart TD
 
 ## AI Tool Plan
 
-<!-- For each part of the pipeline below, describe:
-     - Which AI tool you plan to use (Claude, Copilot, ChatGPT, etc.)
-     - What you'll give it as input (which sections of this planning.md, which requirements)
-     - What you expect it to produce
-     - How you'll verify the output matches your spec
-
-     "I'll use AI to help me code" is not a plan.
-     "I'll give Claude my Chunking Strategy section and ask it to implement chunk_text()
-     with my specified chunk size and overlap" is a plan. -->
-
 **Milestone 3 — Ingestion and chunking:**
 I'll scrape the webpages I listed. I'll ask Claude to write scrape_page() which takes in a webpage and returns a html-tag removed body of text. I'll also give Claude my Chunking Strategy section to implement chunk_text() with my specified size and overlap.
 
@@ -119,3 +109,4 @@ I'll scrape the webpages I listed. I'll ask Claude to write scrape_page() which 
 I'll ask Claude to use all-MiniLM-L6-v2 to embed the chunks and also write a retrieval function that takes in a query and returns top-k chunks as its sources.
 
 **Milestone 5 — Generation and interface:**
+I'll ask Claude to write a generation script and an app.py to serve as the entrypoint. I'll give Claude the ui requirements to serve as a baseline.
