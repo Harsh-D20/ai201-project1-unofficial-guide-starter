@@ -47,12 +47,6 @@ I am using recursive chunking since the documents are split into a very obvious 
 
 ## Retrieval Approach
 
-<!-- Which embedding model are you using (e.g., all-MiniLM-L6-v2 via sentence-transformers)?
-     How many chunks will you retrieve per query (top-k)?
-     If you were deploying this for real users and cost wasn't a constraint, what tradeoffs
-     would you weigh in choosing a different embedding model — context length, multilingual
-     support, accuracy on domain-specific text, latency? -->
-
 **Embedding model:**
 all-MiniLM-L6-v2
 
@@ -77,10 +71,6 @@ If cost were not a constraint, I would opt for an embedding model that could int
 ---
 
 ## Anticipated Challenges
-
-<!-- What could go wrong? Name at least two specific risks with reasoning.
-     Consider: noisy or inconsistent documents, missing source attribution, off-topic
-     retrieval, chunks that split key information across boundaries. -->
 
 1. Several sources contain structured information like tables or lists. If a chunk boundary falls in the middle of that structure, the retrieved chunk will contain an incomplete fact, and the model may answer with partial or misleading pricing information with no way to know something is missing.
 
@@ -118,7 +108,7 @@ flowchart TD
      with my specified chunk size and overlap" is a plan. -->
 
 **Milestone 3 — Ingestion and chunking:**
-I'll scrape the webpages I listed. I'll ask Claude to write scrape_page() which takes in a webpage and returns a html-tag removed body of text. I'll give Claude my Chunking Strategy section to implement chunk_text() with my specified size and overlap.
+I'll scrape the webpages I listed. I'll ask Claude to write scrape_page() which takes in a webpage and returns a html-tag removed body of text. I'll also give Claude my Chunking Strategy section to implement chunk_text() with my specified size and overlap.
 
 **Milestone 4 — Embedding and retrieval:**
 
