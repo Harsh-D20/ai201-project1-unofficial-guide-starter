@@ -2,7 +2,7 @@ from sentence_transformers import SentenceTransformer
 
 from embedding import EMBEDDING_MODEL, get_collection
 
-TOP_K = 10
+TOP_K = 5
 
 _model: SentenceTransformer | None = None
 

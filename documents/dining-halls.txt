@@ -1,4 +1,4 @@
-URL_SOURCE=https://dining.umd.edu/hours-locations/dining-halls
+URL_SOURCE: https://dining.umd.edu/hours-locations/dining-halls
 
 Dining Halls
 

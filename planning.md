@@ -54,12 +54,12 @@ all-MiniLM-L6-v2
 Cosine similarity
 
 **Top-k:**
-10 chunks per query
+5 chunks per query
 
 **Production tradeoff reflection:**
 If cost were not a constraint, I would opt for an embedding model that could interpret other languages since universities tend to have high international student or multilingual populations.
 
-Top-k was increased from 3 to 10 after evaluation revealed that questions requiring synthesis across two plan types (e.g. Resident vs. Connector) needed more retrieved chunks to surface all relevant facts.
+Top-k was initially set to 3, increased to 10 after evaluation revealed that synthesis questions (e.g. Resident vs. Connector) needed more chunks, then reduced to 5 to balance context quality — larger windows introduced noise that degraded generation coherence.
 
 ---
 

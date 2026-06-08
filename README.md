@@ -50,6 +50,33 @@ Chunking is recursive: it first tries to split on paragraph breaks (`\n\n`), the
 **Final chunk count:**
 90 chunks across 11 documents.
 
+**Sample Chunks**
+1. [source: dining-halls.txt]  [url: https://dining.umd.edu/hours-locations/dining-halls]
+debit cards, Dining Dollars and Terrapin Express. During the semester, times for breakfast, lunch and dinner are:
+- Breakfast: Open to 10:30am
+- Lunch: 10:30am to 4:00pm
+- Dinner:  4:00pm to Close Dining Hall Information:
+South Campus: 
+Address: 7093 PREINKERT DR, COLLEGE PARK, MD 20742
+Phone Number: (301) 314-8044
+Breakfast starts at 7 am Monday–Friday and 10 am on weekends, with service running until 9 pm each night.
+
+2. [source: allergy.txt]  [url: https://dining.umd.edu/nutrition-allergies-and-special-diets/allergy]
+to carry it with you everywhere and at all times. In the event of an emergency, we have an Epi-Pen at each dining hall. Managers and supervisors are trained in the correct use of the Epi-PEn. However, for your own safety, if you have been prescribed an Epi-Pen, please carry it with you. Questions?
+
+3. [source: dining-dollars-flexible-discounted-and-convenient.txt]  [url: https://dining.umd.edu/students/dining-dollars-flexible-discounted-and-convenient]
+iscounted, and Convenient What are Dining Dollars? Dining Dollars are a convenient way to pay for food and snacks at any permanent Maryland Dining location on campus, including dining halls, cafés, markets, and convenience shops. Use your UMD ID card to access and pay with Dining Dollars, and you'll enjoy a discount when you purchase them. Discounts & Tax Savings: - Biggest Discount : You get the best discount when you purchase Dining Dollars as part of an  upgraded Anytime Dining plan .
+
+4. [source: dining-services.txt]  [url: https://academiccatalog.umd.edu/undergraduate/campus-administration-resources-student-services/student-programs-services/dining-services]
+kends, with service running until 9 pm each night. - 251 North : Breakfast starts at 8 am every day, with continuous service until 10 pm Monday–Thursday and 7 pm on weekends.
+
+5. [source: dining-dollars-flexible-discounted-and-convenient.txt]  [url: https://dining.umd.edu/students/dining-dollars-flexible-discounted-and-convenient]
+- Panera Bread in The Stamp Dining Dollar Bundles | Quantity | Price | Savings |
+|--------------------|---------|-----------------------------------------------|
+| 125 Dining Dollars | $118.75 | 5% savings + no sales tax (6% off) when used |
+| 250 Dining Dollars | $237.50 | 5% savings + no sales tax (6% off) when used |
+| 500 Dining Dollars | $475.00 | 5% savings + no sales tax (6% off) when used |
+
 ---
 
 ## Embedding Model
@@ -77,6 +104,112 @@ Each retrieved chunk is prefixed with its source URL in the context block passed
 
 ---
 
+## Query Interface
+
+The system is served as a Gradio chat interface (`app.py`) running on `localhost:7680`.
+
+**Input:** A freeform text field where the user types a natural-language question about UMD dining. Five example questions from the evaluation plan are pre-loaded as clickable prompts below the input box.
+
+**Output:** A chat bubble containing the model's response rendered as Markdown. Inline citations appear as clickable `[source]` hyperlinks after each claim, linking directly to the source page the information was drawn from.
+
+**Sample interaction transcript:**
+
+> **User:** I have an allergy. Can I go to a dining hall?
+>
+> **System:** Yes, you can go to a dining hall if you have an allergy. The dining halls have a nutrition staff that is prepared to help you manage your allergy, food intolerance, or dietary restrictions [[source]](https://dining.umd.edu/nutrition-allergies-and-special-diets/allergy). If you have a specific question, you can ask the manager or chef on duty, as they are qualified to discuss specific allergens [[source]](https://dining.umd.edu/nutrition-allergies-and-special-diets/allergy). Additionally, you can check the dining hall menus on the nutrition website to see if they have options that are safe for your allergy [[source]](https://dining.umd.edu/nutrition-allergies-and-special-diets/allergy).
+
+**Example responses with source attribution:**
+
+> **User:** Which dining halls are open early for my 9am class?
+>
+> **System:** Yahentamitsi and South Campus Dining Hall are open early, with breakfast starting at 7 am Monday–Friday [[source]](https://academiccatalog.umd.edu/undergraduate/campus-administration-resources-student-services/student-programs-services/dining-services). This should give you enough time to grab breakfast before your 9am class.
+
+> **User:** My club ends at 8pm, which dining halls are open?
+>
+> **System:** According to the provided documents, Yahentamitsi and South Campus Dining Hall are open until 9 pm each night [[source]](https://academiccatalog.umd.edu/undergraduate/campus-administration-resources-student-services/student-programs-services/dining-services). Therefore, if your club ends at 8 pm, Yahentamitsi and South Campus Dining Hall will still be open.
+
+**Out-of-scope refusal example:**
+
+> **User:** What equipment is available at Eppley Gym?
+>
+> **System:** I don't have enough information on that. The provided documents mention that Sneaker's is a convenience shop located at the Eppley Recreation Center [[source]](https://dining.umd.edu/students/dining-dollars-flexible-discounted-and-convenient), and that Sneakers is also a food option [[source]](https://campusvisitorguides.com/umd/where-to-eat), but they do not provide information about the equipment available at Eppley Gym.
+
+---
+
+## Retrieval Test Results
+
+---
+
+**Query 1: "What is the door price for a student dinner at a UMD dining hall?"**
+
+| Rank | Source | Score |
+|------|--------|-------|
+| 1 | door-prices.txt | 0.2173 |
+| 2 | connector-plans.txt | 0.2230 |
+| 3 | dining-services.txt | 0.3151 |
+| 4 | dining-services.txt | 0.3306 |
+| 5 | dining-halls.txt | 0.3455 |
+
+**Chunk text (top 2):**
+
+> [1] door-prices.txt (score: 0.2173)
+> Dining hall door prices for Fall 2025:
+> - Breakfast: $9.49 — Open to 10:30am
+> - Lunch: $15.99 — 10:30am to 4:00pm
+> - Dinner: $19.99 — 4:00pm to Close
+
+> [2] connector-plans.txt (score: 0.2230)
+> Dining Hall Door Prices If you're unsure about which plan to select and want to try a dining hall meal first, here are the door prices for Fall 2025: - Breakfast: $9.49 - Lunch: $15.99 - Dinner: $19.99
+
+**Why the top chunks are relevant:**
+Rank 1 is the most directly relevant chunk in the entire corpus — it is the complete door price table from the dedicated door-prices page, containing the exact $19.99 dinner figure and its 4:00pm–Close window. Its cosine distance of 0.2173 is the lowest score recorded across all eval queries, reflecting a near-exact semantic match between the query and the document. Rank 2 is also relevant: the connector-plans page independently reproduces the same door price table as a convenience for students considering a plan, so the model has a second source confirming the same fact. Ranks 3–5 are noise — they discuss dining plans, Dining Dollars, and general hall information, none of which contain dinner pricing. Precision for this query is 2/5 = 40%.
+
+---
+
+**Query 2: "What is the difference between a Resident Plan and a Connector Plan at UMD?"**
+
+| Rank | Source | Score |
+|------|--------|-------|
+| 1 | connector-plans.txt | 0.4983 |
+| 2 | resident-plans.txt | 0.5056 |
+| 3 | resident-plans.txt | 0.5210 |
+| 4 | dining-services.txt | 0.5415 |
+| 5 | connector-plans.txt | 0.5561 |
+
+**Chunk text:**
+
+> [1] connector-plans.txt (score: 0.4983)
+> Connector Dining Plans & Block Meal Plans: UMD Dining offers flexible dining plans for students who live in a space with their own kitchen! These plans are designed to provide students with access to healthy, delicious meals while connecting them to the UMD community in welcoming spaces.
+
+> [2] resident-plans.txt (score: 0.5056)
+> URL_SOURCE: https://dining.umd.edu/students/resident-plans — TITLE: Resident Dining Plans | UMD Dining Services
+
+> [3] resident-plans.txt (score: 0.5210)
+> As a resident dining plan member, you have unlimited access to three campus dining halls and can enjoy plenty of great food all semester long. You are welcome in the dining halls for breakfast, lunch, dinner and snacks in between. To allow us to provide this plan, no carryout is permitted.
+
+> [4] dining-services.txt (score: 0.5415)
+> Resident Dining Plans For resident students, we offer the Anytime Dining program, which provides unlimited access to the dining halls. Students can choose one of four plans: Base Plan, Base Plus Plan, Preferred Plan, Premium Plan.
+
+> [5] connector-plans.txt (score: 0.5561)
+> Five-Day Plans and Connector Block Meal Plans do not fulfill the Resident Dining Plan requirement for students living in traditional on-campus housing. Plan Expiry: All Connector Plans and Dining Dollars expire at the end of Spring Semester.
+
+**Why the top chunks are relevant:**
+Ranks 1 and 5 together establish the Connector Plan's identity: rank 1 describes who it is for (students with their own kitchen, i.e. off-campus), and rank 5 explicitly states that Connector Plans do not fulfill the on-campus Resident Dining Plan requirement — the clearest contrast between the two plan types in the corpus. Ranks 2, 3, and 4 cover the Resident Plan side: rank 3 gives the key fact (unlimited access to all three dining halls), and rank 4 provides the tier breakdown. Together, ranks 1–5 give the model enough information to correctly characterize both plans and their primary difference. Notably, the single chunk that most explicitly states the contrast ("for off-campus students without committing to unlimited dining") ranked 23rd and was not retrieved within the top-5 cutoff, yet the answer is still accurate because the individual plan descriptions in ranks 1–5 collectively convey the same information.
+
+---
+
+**Query 3: "What should I do if I am too sick to go to a dining hall?"** *(chunks only)*
+
+| Rank | Source | Score | Chunk preview |
+|------|--------|-------|---------------|
+| 1 | sick-meals.txt | 0.3719 | URL_SOURCE: https://dining.umd.edu/students/sick-meals TITLE: Sick Meals UMD Dining Services Sick Meals If you are a resident student and are feeling unwell, we understand that it may not be wise for you to come to the dining hall for a meal. To help, we offer a Sick Meal service that allows you to send a representative to collect a meal on your behalf. |
+| 2 | sick-meals.txt | 0.4802 | a representative to collect a meal on your behalf. How to Get a Sick Meal: Complete the Online Sick Meal Request Form. Send a Representative : Have a friend come to the dining hall to pick up your meal. Please make sure your representative wears a mask to ensure safety. Your representative should stop at the greeter's station and give your name. We will bring the meal to them. |
+| 3 | sick-meals.txt | 0.4818 | nd give your name. We will bring the meal to them. Meal Details: Sick Meals are available at no additional cost for students with a resident dining plan. The service is intended to provide basic nutrition for short-term illness and does not replace long-term medical care. If you are experiencing severe or extended illness (more than three days), we strongly recommend visitingthe Health Center for assistance. |
+| 4 | dining-services.txt | 0.5232 | erent tastes and dietary preferences. Dining Halls Dining halls are open to the entire university community, but our first priority is to serve resident students. We are open daily before and after class hours to ensure students can enjoy nutritious meals. The hours of operation for the dining halls are: - Yahentamitsi and South Campus Dining Hall : Breakfast starts at 7 am Monday–Friday and 10 am on weekends, with service running until 9 pm each night. |
+| 5 | where-to-eat.txt | 0.5334 | resident students and visitors, faculty and staff Come in and enjoy delicious food from early morning to late evening every day - guests are always welcome! When classes are in session, try one of our three dining halls, packed with delicious options When school’s out, the Stamp is your best bet. Hours vary based on location and academic calendar. For more information, visit dining. umd.edu. For information about Maryland Dining for large groups, email diningplan@umd.edu. Dining Halls |
+
+---
+
 ## Evaluation Report
 
 **Q1 — What is the door price for a student dinner at a UMD dining hall?**
@@ -101,7 +234,7 @@ Each retrieved chunk is prefixed with its source URL in the context block passed
 
 - **Expected:** A Resident Plan has unlimited swipes but the student must reside on campus. A Connector Plan has a limited amount of swipes, but allows students to live off campus. The prices for Resident Plans can be found at: https://dining.umd.edu/students/resident-plans, and the prices for Connector Plans can be found at: https://dining.umd.edu/students/connector-plans.
 - **System response:** The main difference between a Resident Plan and a Connector Plan at UMD is that Resident Plans provide unlimited access to three campus dining halls [https://dining.umd.edu/students/resident-plans], whereas Connector Plans are designed for students who live in a space with their own kitchen and provide flexible dining options [https://dining.umd.edu/students/connector-plans]. Additionally, Resident Plans are required for students living in traditional on-campus housing, and Connector Plans do not fulfill this requirement [https://dining.umd.edu/students/connector-plans]. Resident Plans also offer different tiers with varying amounts of Dining Dollars and guest passes [https://academiccatalog.umd.edu/undergraduate/campus-administration-resources-student-services/student-programs-services/dining-services], whereas Connector Plans have different options but do not include unlimited dining hall access [https://dining.umd.edu/students/connector-plans].
-- **Retrieval quality:** Partially relevant — the most explicit contrast chunk ("for off-campus students without committing to unlimited access") ranked 23rd in cosine distance and was not retrieved within the top-10 cutoff.
+- **Retrieval quality:** Partially relevant — the most explicit contrast chunk ("for off-campus students without committing to unlimited access") ranked 23rd in cosine distance and was not retrieved within the top-5 cutoff.
 - **Response accuracy:** Accurate — the system correctly captured the unlimited vs. block distinction and the on-campus residency requirement, arriving at the right conclusion despite the missing chunk.
 
 ---
@@ -130,10 +263,10 @@ Each retrieved chunk is prefixed with its source URL in the context block passed
 *"What is the difference between a Resident Plan and a Connector Plan at UMD?"*
 
 **What the system returned:**
-The system retrieved chunks describing each plan in isolation — the Connector Plan intro, the Resident Plan unlimited-access policy, and the on-campus residency requirement — but did not retrieve the single chunk that most directly contrasts the two plans side by side ("for off-campus students without committing to unlimited access"). That chunk ranked 23rd in cosine distance and fell outside the top-10 cutoff. The generated answer described each plan correctly on its own terms but stated the contrast less crisply than the source document does.
+The system retrieved chunks describing each plan in isolation — the Connector Plan intro, the Resident Plan unlimited-access policy, and the on-campus residency requirement — but did not retrieve the single chunk that most directly contrasts the two plans side by side ("for off-campus students without committing to unlimited access"). That chunk ranked 23rd in cosine distance and fell outside the top-5 cutoff. The generated answer described each plan correctly on its own terms but stated the contrast less crisply than the source document does.
 
 **Root cause (tied to a specific pipeline stage):**
-The failure originates in the retrieval stage, specifically the interaction between chunk size and top-k. Because the contrast is stated in one sentence embedded mid-paragraph in the connector plans page, recursive chunking placed it inside a larger 500-character chunk that also contained unrelated pricing detail. That diluted the embedding's similarity signal for a query about *differences* between plans. The chunk ranked highly for queries about Connector Plans specifically, but not for a comparison query — the embedding model matched on individual plan descriptions rather than on the concept of contrast. Increasing top-k from 3 to 10 improved recall enough to surface the key facts, but the most explicit comparison sentence remained out of reach.
+The failure originates in the retrieval stage, specifically the interaction between chunk size and top-k. Because the contrast is stated in one sentence embedded mid-paragraph in the connector plans page, recursive chunking placed it inside a larger 500-character chunk that also contained unrelated pricing detail. That diluted the embedding's similarity signal for a query about *differences* between plans. The chunk ranked highly for queries about Connector Plans specifically, but not for a comparison query — the embedding model matched on individual plan descriptions rather than on the concept of contrast. Top-k was tuned from 3 to 10 to 5 during development; at 5, the key plan-description chunks are retrieved but the most explicit comparison sentence remained out of reach.
 
 **What you would change to fix it:**
 Reducing chunk size to 250 characters was tested during development. It isolated the contrast sentence into its own chunk and improved retrieval precision and recall for Q3, but degraded generation quality across other questions — shorter chunks produced less coherent context passages for the LLM — so the change was reverted. The more targeted fix would be query expansion: rephrasing "difference between A and B" as "A vs B", "A compared to B", and "who should choose A over B" before retrieval. This casts a wider semantic net without affecting chunk coherence for any other question.
@@ -146,7 +279,7 @@ Reducing chunk size to 250 characters was tested during development. It isolated
 The Chunking Strategy section of `planning.md` specified the chunk size (500 characters), overlap (50 characters), and separator hierarchy before any code was written. When Claude was asked to implement `chunker.py`, those parameters were passed directly from the spec as context, and the resulting implementation matched the intended design on the first attempt with no ambiguity about what values to use. Without the spec, the implementation step would have required back-and-forth to settle on chunk size — instead, the decision was already made and justified, and the AI tool could focus entirely on the mechanics of recursive splitting and overlap merging.
 
 **One way your implementation diverged from the spec, and why:**
-The spec initially set top-k at 3 chunks per query. During evaluation, Q3 (Resident vs. Connector Plan comparison) revealed that 3 chunks was insufficient — two different documents needed to be surfaced simultaneously, and at k=3 the system returned only one plan type's chunks. Top-k was increased to 10 after confirming that Q1, Q2, Q4, and Q5 all remained accurate at the higher value. The spec was then updated to reflect k=10 with an explanation of why the change was made. This divergence was data-driven: the original value was a reasonable prior, but evaluation against real questions showed it was too conservative for synthesis queries that span multiple source documents.
+The spec initially set top-k at 3 chunks per query. During evaluation, Q3 (Resident vs. Connector Plan comparison) revealed that 3 chunks was insufficient — two different documents needed to be surfaced simultaneously, and at k=3 the system returned only one plan type's chunks. Top-k was increased to 10 after evaluation showed that synthesis questions needed more chunks, then reduced to 5 after observing that larger context windows introduced noise that degraded generation coherence. The spec was updated at each step to reflect the current value and the reason for the change. This divergence was data-driven throughout: each adjustment was made after testing against the eval questions rather than by intuition.
 
 ---
 

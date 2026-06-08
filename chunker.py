@@ -10,10 +10,18 @@ def chunk_text(text: str, chunk_size: int = CHUNK_SIZE, overlap: int = OVERLAP) 
     return _merge_with_overlap(pieces, chunk_size, overlap)
 
 
+def _parse_url(text: str) -> str:
+    for line in text.splitlines():
+        if line.startswith("URL_SOURCE"):
+            return line.split("URL_SOURCE", 1)[1].lstrip(":=").strip()
+    return ""
+
+
 def chunk_document(text: str, source: str, chunk_size: int = CHUNK_SIZE, overlap: int = OVERLAP) -> list[dict]:
-    """Return chunks as dicts with 'text' and 'source' keys."""
+    """Return chunks as dicts with 'text', 'source', and 'url' keys."""
+    url = _parse_url(text)
     return [
-        {"text": chunk, "source": source}
+        {"text": chunk, "source": source, "url": url}
         for chunk in chunk_text(text, chunk_size, overlap)
     ]
 
@@ -89,6 +97,6 @@ if __name__ == "__main__":
     import random
     print("\nSample chunks:")
     for chunk in random.sample(all_chunks, 5):
-        print(f"[source: {chunk['source']}]")
+        print(f"[source: {chunk['source']}]  [url: {chunk['url']}]")
         print(chunk["text"])
         print("---")

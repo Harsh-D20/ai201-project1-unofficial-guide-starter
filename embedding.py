@@ -10,13 +10,6 @@ CHROMA_DIR = "chroma_db"
 COLLECTION_NAME = "dining_guide"
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
-def _parse_url(text: str) -> str:
-    for line in text.splitlines():
-        if line.startswith("URL_SOURCE:"):
-            return line.split("URL_SOURCE:", 1)[1].strip()
-    return ""
-
-
 def build_index(docs_dir: str = DOCS_DIR, chroma_dir: str = CHROMA_DIR) -> chromadb.Collection:
     model = SentenceTransformer(EMBEDDING_MODEL)
     client = chromadb.PersistentClient(path=chroma_dir)
@@ -37,10 +30,7 @@ def build_index(docs_dir: str = DOCS_DIR, chroma_dir: str = CHROMA_DIR) -> chrom
         path = os.path.join(docs_dir, filename)
         with open(path, encoding="utf-8") as f:
             text = f.read()
-        url = _parse_url(text)
-        for chunk in chunk_document(text, source=filename):
-            chunk["url"] = url
-            all_chunks.append(chunk)
+        all_chunks.extend(chunk_document(text, source=filename))
 
     texts = [c["text"] for c in all_chunks]
     ids = [f"chunk_{i}" for i in range(len(all_chunks))]

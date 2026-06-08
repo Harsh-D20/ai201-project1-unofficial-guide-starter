@@ -14,10 +14,10 @@ SYSTEM_PROMPT = (
     "If the documents don't contain enough information to answer, say "
     "'I don't have enough information on that.'\n\n"
     "Format your answer with in-text citations. After each claim, cite the source "
-    "URL in square brackets, like: "
-    "\"Dinner costs $19.99 [https://dining.umd.edu/home/hours-locations/dining-halls/door-prices]. "
+    "as a Markdown hyperlink using the format [[source]](url), like: "
+    "\"Dinner costs $19.99 [[source]](https://dining.umd.edu/home/hours-locations/dining-halls/door-prices). "
     "Students living on campus must purchase a Resident Plan "
-    "[https://dining.umd.edu/students/resident-plans].\"\n\n"
+    "[[source]](https://dining.umd.edu/students/resident-plans).\"\n\n"
     "Only use information from the provided documents. Do not add facts from outside "
     "the documents."
 )
@@ -31,7 +31,7 @@ def build_context(chunks: list[dict]) -> str:
     return "\n\n---\n\n".join(parts)
 
 
-def generate(query: str, top_k: int = 10) -> str:
+def generate(query: str, top_k: int = 5) -> str:
     chunks = retrieve(query, top_k=top_k)
     context = build_context(chunks)
 
